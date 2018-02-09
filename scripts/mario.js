@@ -34,6 +34,12 @@ module.exports = (robot) => {
     }
   }
 
+  const resetStore =  () => {
+    robot.brain.set('matches', {})
+    robot.brain.set('wins', {})
+    robot.brain.set('logs', [])
+  }
+
   const playerBumpWin = (name) => {
     let wins = robot.brain.get('wins')
     if(!wins[name]){
@@ -135,6 +141,11 @@ ${ranking_string.join("\n")}
 
   robot.respond(/champion/i, (res) => {
     res.reply(`:first_place_medal: ${topPlayers(1)[0].name} :first_place_medal:`)
+  })
+
+  robot.respond(/reset/i, (res) => {
+    resetStore()
+    res.reply('cleared the state')
   })
 
   robot.respond(/top\s?(.*)/i, (res) => {
