@@ -3,6 +3,7 @@ module.exports = (robot) => {
   const match_messages = [
     "What a match!",
     "I've seen better matches :shrugging:",
+    "Liar, you didn't win, I think ${second_place} won!"
     "That was fun :muscle:"
   ]
 
@@ -120,6 +121,7 @@ module.exports = (robot) => {
   robot.respond(/match (.*)/i, (res) => {
     let players = res.match[1].trim().split(" ")
     addMatch(players)
+    [first_place, second_place, third_place, fourth_place] = players
     const message = res.random(match_messages)
     res.reply(`${message}, congratulations ${players[0]}!`)
   })
