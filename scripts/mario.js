@@ -3,7 +3,7 @@ module.exports = (robot) => {
   const match_messages = [
     "What a match!",
     "I've seen better matches :shrugging:",
-    "Liar, you didn't win, I think ${second_place} won!"
+    "Liar, you didn't win, I think ${second_place} won!",
     "That was fun :muscle:"
   ]
 
