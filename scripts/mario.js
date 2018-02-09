@@ -1,11 +1,5 @@
 module.exports = (robot) => {
 
-  const match_messages = [
-    "What a match!",
-    "I've seen better matches :shrugging:",
-    "Liar, you didn't win, I think ${second_place} won!",
-    "That was fun :muscle:"
-  ]
 
   const addMatch = (players) => {
     //first add the matches to the players
@@ -121,9 +115,20 @@ module.exports = (robot) => {
   robot.respond(/match (.*)/i, (res) => {
     let players = res.match[1].trim().split(" ")
     addMatch(players)
-    [first_place, second_place, third_place, fourth_place] = players
+    const first_place = players[0],
+          second_place = players[1],
+          third_place = players[2],
+          fourth_place = players[3]
+
+    const match_messages = [
+      `What a match!`,
+      `I've seen better matches :shrugging:`,
+      `Liar, ${first_place} didn't win, I think ${second_place} won!`,
+      `That was fun :muscle:`
+    ]
+
     const message = res.random(match_messages)
-    res.reply(`${message}, congratulations ${players[0]}!`)
+    res.reply(`${message}, congratulations ${first_place}!`)
   })
 
   robot.respond(/last/i, (res) => {
