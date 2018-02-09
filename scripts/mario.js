@@ -1,5 +1,10 @@
 module.exports = (robot) => {
-  let store = {}
+
+  const match_messages = [
+    "What a match!",
+    "I've seen better matches :shrugging:",
+    "That was fun :muscle:"
+  ]
 
   const addMatch = (players) => {
     //first add the matches to the players
@@ -109,7 +114,8 @@ module.exports = (robot) => {
   robot.respond(/match (.*)/i, (res) => {
     let players = res.match[1].trim().split(" ")
     addMatch(players)
-    res.reply(`what a match!, congratulations ${players[0]}!`)
+    const message = res.random(match_messages)
+    res.reply(`${message}, congratulations ${players[0]}!`)
   })
 
   robot.respond(/last/i, (res) => {
@@ -138,8 +144,24 @@ ${ranking_string.join("\n")}
       number = parseInt(res.match[1], 10)
     }
 
-    let ranking = topPlayers(number)
+    let ranking = topPlayers(number).map((score, index) => {
+      let icon = index + 1
+      if(index == 0){
+         icon = ":first_place_medal:"
+      } else if(index == 1) {
+        icon = ":second_place_medal:"
+      } else if(index == 2) {
+        icon = ":third_place_medal:"
+      }
 
-    res.reply(ranking.map((score, index) => `${index + 1}. ${score.name} (${score.wins}/${score.matches}, ${score.ratio})`).join("\n"))
+      return `${icon}: ${score.name} (won ${score.wins} of ${score.matches}, ratio: ${score.ratio})`
+    })
+
+    const message = `
+These are they best players overall:
+${ranking.join("\n")}
+    `
+
+    res.reply(message)
   })
 }
